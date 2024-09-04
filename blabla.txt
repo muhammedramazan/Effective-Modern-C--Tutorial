@@ -8,3 +8,4 @@ muddies : çamurlar
 stir up : karıştırmak
 turbidity : bulanıklık
 -- ITEM 2 --
+curious : meraklı
