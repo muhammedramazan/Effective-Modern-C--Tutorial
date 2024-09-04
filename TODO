@@ -1,0 +1,10 @@
+-- ITEM 1 --
+[ ] At Item_1, I dont understand that universal reference. In item 24 , it will be explaind
+[ ] deducing a type 
+[ ] decays to
+[ ] function-to-pointer decay ???
+[ ] array-to-pointer decay ???
+[ ] decay-to-pointer rules
+[ ] Item 15 explains, declaring this function constexpr
+[ ] aggregate object
+-- ITEM 2 --

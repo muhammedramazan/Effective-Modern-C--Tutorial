@@ -72,18 +72,6 @@ void f_pointer(T* param) {
 // Case 2: ParamType is a Universal Reference
 template <typename T>
 void f_universal(T&& param) {
-  if constexpr (!std::is_const<
-                    typename std::remove_reference<T>::type>::value) {
-    param = 1234;
-  }
-  if constexpr (std::is_rvalue_reference<T>::value) {
-    std::cout << "-------" << std::endl;
-    std::cout << "-------" << std::endl;
-    std::cout << "-------" << std::endl;
-    std::cout << "-------" << std::endl;
-    std::cout << "-------" << std::endl;
-    std::cout << "-------" << std::endl;
-  }
   std::cout << "T&& param" << std::endl;
   std::cout << "f_universal T Type -> " << typeid(T).name()
             << " lvalue reference -> " << std::boolalpha
@@ -104,9 +92,72 @@ void f_universal(T&& param) {
             << std::endl;
 }
 
+//  Case 3: ParamType is Neither a Pointer nor a Reference
+template <typename T>
+void f_NON(T param) {
+  std::cout << "T param" << std::endl;
+  std::cout << "f_NON T Type -> " << typeid(T).name() << " pointer -> "
+            << std::boolalpha << std::is_pointer<T>::value
+            << " lvalue reference -> " << std::boolalpha
+            << std::is_lvalue_reference<T>::value << " rvalue reference -> "
+            << std::boolalpha << std::is_rvalue_reference<T>::value
+            << " const -> " << std::boolalpha
+            << std::is_const<typename std::remove_reference<T>::type>::value
+            << std::endl;
+
+  std::cout << "f_NON param Type -> " << typeid(decltype(param)).name()
+            << " pointer -> " << std::boolalpha
+            << std::is_pointer<decltype(param)>::value
+            << " lvalue reference -> " << std::boolalpha
+            << std::is_lvalue_reference<decltype(param)>::value
+            << " rvalue reference -> " << std::boolalpha
+            << std::is_rvalue_reference<decltype(param)>::value << " const -> "
+            << std::boolalpha
+            << std::is_const<
+                   typename std::remove_reference<decltype(param)>::type>::value
+            << std::endl;
+}
+
+// Array argument
+template <typename T>
+void f_1(T param) {
+  std::cout << "T param" << std::endl;
+  std::cout << "f_arr_1 T Type -> " << typeid(T).name() << " pointer -> "
+            << std::boolalpha << std::is_pointer<T>::value << " reference -> "
+            << std::boolalpha << std::is_reference<T>::value << " array -> "
+            << std::boolalpha << std::is_array<T>::value << std::endl;
+  std::cout << "f_arr_1 param Type -> " << typeid(decltype(param)).name()
+            << " pointer -> " << std::boolalpha
+            << std::is_pointer<decltype(param)>::value << " reference -> "
+            << std::boolalpha << std::is_reference<decltype(param)>::value
+            << " array -> " << std::boolalpha
+            << std::is_array<
+                   typename std::remove_reference<decltype(param)>::type>::value
+            << std::endl;
+}
+
+template <typename T>
+void f_2(T& param) {
+  std::cout << "T& param" << std::endl;
+  std::cout << "f_arr_2 T Type -> " << typeid(T).name() << " pointer -> "
+            << std::boolalpha << std::is_pointer<T>::value << " reference -> "
+            << std::boolalpha << std::is_reference<T>::value << " array -> "
+            << std::boolalpha << std::is_array<T>::value << std::endl;
+  std::cout << "f_arr_2 param Type -> " << typeid(decltype(param)).name()
+            << " pointer -> "  //
+            << std::boolalpha << std::is_pointer<decltype(param)>::value
+            << " reference -> "  //
+            << std::boolalpha << std::is_reference<decltype(param)>::value
+            << " array -> "  //
+            << std::boolalpha
+            << std::is_array<
+                   typename std::remove_reference<decltype(param)>::type>::value
+            << std::endl;
+}
+
 int main(int argc, char const* argv[]) {
   // case1:
-  if (false) {
+  if (true) {
     // reference
     {
       int x = 27;         // x is an int
@@ -141,7 +192,6 @@ int main(int argc, char const* argv[]) {
       // param's type is const int*
     }
   }
-
   // case2:
   if (true) {
     int x = 27;
@@ -152,34 +202,85 @@ int main(int argc, char const* argv[]) {
     const int&& crrx = 12;
 
     std::cout << "int x = 27;" << std::endl;
-    std::cout << "pre : " << x << std::endl;
     f_universal(x);
-    std::cout << "post : " << x << std::endl;
 
     std::cout << "const int cx = x;" << std::endl;
-    std::cout << "pre : " << cx << std::endl;
     f_universal(cx);
-    std::cout << "post : " << cx << std::endl;
 
     std::cout << "int& lrx = x;" << std::endl;
-    std::cout << "pre : " << lrx << std::endl;
     f_universal(lrx);
-    std::cout << "post : " << lrx << std::endl;
 
     std::cout << "const int& clrx = x;" << std::endl;
-    std::cout << "pre : " << clrx << std::endl;
     f_universal(clrx);
-    std::cout << "post : " << clrx << std::endl;
 
     std::cout << "int&& rrx = 12;" << std::endl;
-    std::cout << "pre : " << rrx << std::endl;
     f_universal(rrx);
-    std::cout << "post : " << rrx << std::endl;
 
     std::cout << "const int&& crrx = 12;" << std::endl;
-    std::cout << "pre : " << crrx << std::endl;
     f_universal(crrx);
-    std::cout << "post : " << crrx << std::endl;
+    std::cout << "12" << std::endl;
+    f_universal(12);
+  }
+  // case:3
+  if (true) {
+    int x = 27;
+    const int cx = x;
+    int& lrx = x;
+    const int& clrx = x;
+    int&& rrx = 12;
+    const int&& crrx = 12;
+    int* ptr = &x;
+    int* const ptrc = &x;
+    const int* cptr = &x;
+    const int* const cptrc = &x;
+    *ptr = 13;
+    ptr = &x;
+    *ptrc = 13;
+    // ptrc = &x;
+    // *cptr = 13 ;
+    cptr = &x;
+    // *cptrc = 13 ;
+    // cptrc = &x;
+    std::cout << "int x = 27;" << std::endl;
+    f_NON(x);
+
+    std::cout << "const int cx = x;" << std::endl;
+    f_NON(cx);
+
+    std::cout << "int& lrx = x;" << std::endl;
+    f_NON(lrx);
+
+    std::cout << "const int& clrx = x;" << std::endl;
+    f_NON(clrx);
+
+    std::cout << "int&& rrx = 12;" << std::endl;
+    f_NON(rrx);
+
+    std::cout << "const int&& crrx = 12;" << std::endl;
+    f_NON(crrx);
+    std::cout << "12" << std::endl;
+    f_NON(12);
+    std::cout << "int* ptr" << std::endl;
+    f_NON(ptr);
+    std::cout << "int* const ptrc" << std::endl;
+    f_NON(ptrc);
+    std::cout << "const int* cptr" << std::endl;
+    f_NON(cptr);
+    std::cout << "const int* const cptrc" << std::endl;
+    f_NON(cptrc);
+  }
+  // Array Arguments
+  if (true) {
+    int arr[12];
+    f_1(arr);
+    f_2(arr);
+  }
+  // Funtion Arguments Arguments
+  if (true) {
+    void f1(int param);
+    f_1(f1);
+    f_2(f1);
   }
   return 0;
 }
+void f1(int param){}

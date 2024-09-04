@@ -4,3 +4,7 @@ tremendous : Muazzam
 hard-pressed : zor durumda
 haziest : puslu
 pinch : sıkıntı
+muddies : çamurlar
+stir up : karıştırmak
+turbidity : bulanıklık
+-- ITEM 2 --
