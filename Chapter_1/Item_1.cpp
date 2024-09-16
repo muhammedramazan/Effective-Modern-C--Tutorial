@@ -220,6 +220,9 @@ int main(int argc, char const* argv[]) {
     f_universal(crrx);
     std::cout << "12" << std::endl;
     f_universal(12);
+
+    std::cout << "std::move(x);" << std::endl;
+    f_universal(std::move(x));
   }
   // case:3
   if (true) {
@@ -268,6 +271,8 @@ int main(int argc, char const* argv[]) {
     f_NON(cptr);
     std::cout << "const int* const cptrc" << std::endl;
     f_NON(cptrc);
+    std::cout << "std::move(x);" << std::endl;
+    f_NON(std::move(x));
   }
   // Array Arguments
   if (true) {
@@ -283,4 +288,4 @@ int main(int argc, char const* argv[]) {
   }
   return 0;
 }
-void f1(int param){}
+void f1(int param) {}

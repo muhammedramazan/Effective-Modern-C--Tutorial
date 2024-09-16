@@ -1,5 +1,6 @@
 -- ITEM 1 --
 [ ] At Item_1, I dont understand that universal reference. In item 24 , it will be explaind
+[ ] at universal template type deduction, the function parameter type is rvalue but argument type is lvalue why this happened
 [ ] deducing a type 
 [ ] decays to
 [ ] function-to-pointer decay ???
@@ -8,3 +9,8 @@
 [ ] Item 15 explains, declaring this function constexpr
 [ ] aggregate object
 -- ITEM 2 --
+[ ] I didnt understand { auto &&i = rrx; }
+[ ] reference of array const char (&arr3)[13] = name;
+[ ] ditto
+[ ] std::initializer_list.
+[ ] braced initializer
